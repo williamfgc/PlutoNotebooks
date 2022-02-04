@@ -16,7 +16,7 @@ md"""
 
 This notebook generates plots for important questions for each section
 
-## Section: Project Demographics
+## Section: Background Information
 
 
 2. Roughly what percentage of your overall work time is spent **using** research software?
@@ -68,6 +68,9 @@ end
 
 # ╔═╡ b341d6c8-09ea-4c95-b001-ec92adb279ed
 md"""
+
+## Section: Project Demographics
+
 5. At any given moment, approximately how many developers are contributing to your research software project, including yourself?
 
 6. Approximately how many of those developers do you interact with on at least a weekly basis?
@@ -93,7 +96,7 @@ function plot_5_6()
     ax = Axis(fig[1,1], 
 		      xticks = (0:1:5, ["0", "1", "2-3", "4-5", "6-10", "> 10"]),
               yticks = 0:1:20,
-		      xlabel = "Number of people",
+		      xlabel = "Number of developer",
               ylabel = "Responses",
               title = "Project developers and interactions")
 
@@ -106,9 +109,9 @@ function plot_5_6()
 	        )
 
     # Legend
-    labels = ["developers", "weekly interactions"]
+    labels = ["active", "interactive (weekly)"]
     elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
-    title = ""
+    title = "Developer"
 
     Legend(fig[1,1], elements, labels, title, 
 		tellheight = false,
@@ -123,14 +126,454 @@ end
 plot_5_6()
 end
 
+# ╔═╡ b46d2338-2179-434b-97bd-c3cb401b4519
+md"""
+9. Indicate the importance of the following characteristics of your research software
+"""
+
+# ╔═╡ ba87bdf3-0789-434b-84e2-93184faf18fb
+# Plot question 9
+begin
+
+function plot_9()
+    x = [ 1, 1, 1, 1, 1, 1,
+	      2, 2, 2, 2, 2, 2,
+		  3, 3, 3, 3, 3, 3,
+		  4, 4, 4, 4, 4, 4
+	    ]
+	
+    y = [ 0,  1,  1,  0,  0, 19,
+		  1,  4,  4,  4, 14, 11,
+		  4, 13, 10, 16, 11,  5,
+		 33, 20, 23, 18,  9,  3
+	     ]
+    
+    dodge = [ 1, 2, 3, 4, 5, 6,
+		      1, 2, 3, 4, 5, 6,
+		      1, 2, 3, 4, 5, 6,
+		      1, 2, 3, 4, 5, 6,
+	        ]  
+
+    # Figure and Axis
+    fig = Figure()
+    ax = Axis(fig[1,1], 
+		      xticks = (1:1:4, ["1-Not important", "2", "3", "4-Very Important"]),
+              yticks = 0:5:36,
+		      xlabel = "Level of Importance",
+              ylabel = "Responses",
+              title = "Importance of software characteristics")
+
+	colors = Makie.wong_colors()
+    # Plot
+    barplot!(ax, x, y,
+            dodge = dodge,
+            color = colors[dodge],
+		    tellwidth = true, tellheight = true
+	        )
+
+    # Legend
+    labels = ["Functionality", "Usability", "Sustainability",
+	          "Performance", "Portability", "Security"]
+    elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
+    title = "Characteristic"
+
+	Legend(fig[1,1], elements, labels, title,
+	       tellheight = false,
+           tellwidth = false,
+           margin = (10, 10, 10, 10),
+           halign = :left, valign = :top, orientation = :vertical      
+	 )
+
+  #   Legend(fig[1,1], elements, labels, title, 
+		# tellheight = false,
+  #       tellwidth = false,
+  #       margin = (10, 10, 10, 10),
+  #       halign = :right, valign = :top, orientation = :horizontal)
+		
+    Makie.save("SWCharacteristics.pdf", fig)
+	fig
+end
+
+plot_9()
+end
+
+# ╔═╡ 9c6234a5-9721-431f-bc95-8d7a2efd91c5
+md"""
+
+## Section: Project Technical Approach
+
+12. Indicate the importance of the following to your research software
+"""
+
+# ╔═╡ c927a13e-82d5-402a-b330-fdecadf58764
+# Plot question 12
+begin
+import ColorTypes
+	
+function plot_12()
+    x = [ 1, 1, 1, 1, 1, 1, 1, 1,
+	      2, 2, 2, 2, 2, 2, 2, 2,
+		  3, 3, 3, 3, 3, 3, 3, 3, 
+		  4, 4, 4, 4, 4, 4, 4, 4  
+	    ]
+	
+    y = [ 9,  8,  9,  3, 12, 20,  5, 25,
+		  8,  6, 13,  6,  9,  6,  8,  8,
+		  7,  8,  5, 14,  6,  8,  6,  2,
+		 14, 16, 10, 15, 11,  4, 19,  2,
+	     ]
+    
+    dodge = [ 1, 2, 3, 4, 5, 6, 7, 8,
+		      1, 2, 3, 4, 5, 6, 7, 8,
+		      1, 2, 3, 4, 5, 6, 7, 8,
+		      1, 2, 3, 4, 5, 6, 7, 8
+	        ]  
+
+    # Figure and Axis
+    fig = Figure()
+    ax = Axis(fig[1,1], 
+		      xticks = (1:1:4, ["1-Not important", "2", "3", "4-Very Important"]),
+              yticks = 0:5:26,
+		      xlabel = "Level of Importance",
+              ylabel = "Responses",
+              title = "Importance of software related operation")
+
+	colors = Makie.wong_colors()
+    push!(colors, ColorTypes.RGBA{Float32}(0.5f0,0.89411765f0,0.25882354f0,1.0f0))
+
+	
+    # Plot
+    barplot!(ax, x, y,
+            dodge = dodge,
+            color = colors[dodge],
+	        )
+
+    # Legend
+    labels = ["Data storage", 
+		      "Data interaction (e.g. Notebooks, GUI)", 
+		      "Data dissemination",
+	          "Continuous Integration/Deployment", 
+		      "Server deployment", 
+		      "Cloud deployment", 
+		      "Numerical libraries",
+	          "Cloud API services"]
+    
+	elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
+    title = ""
+
+	Legend(fig[1,1], elements, labels, title,
+	       tellheight = false,
+           tellwidth = false,
+           margin = (10, 10, 10, 10),
+           halign = :center, valign = :top, orientation = :vertical      
+	 )
+		
+    Makie.save("SWOperations.pdf", fig)
+	fig
+end
+
+plot_12()
+end
+
+# ╔═╡ 7e97d299-86e0-4dcc-878a-5fd54b1d2a53
+md"""
+14. What programming languages are currently used in your project?
+"""
+
+# ╔═╡ 0bb3a38f-955f-48ec-b606-785557f16cb1
+begin
+function plot_14()
+    x = [ 1, 2, 3, 4, 5]
+	y = [ 30, 22, 6, 5, 3]
+	     
+    dodge = 1:1:5
+	
+    # Figure and Axis
+    fig = Figure()
+    ax = Axis(fig[1,1], 
+		      xticks = 0:5:40,
+		      yticks = (1:1:5, ["Python", "C++", "C", "JavaScript", "Java"]),
+		      xlabel = "Responses",
+              title = "Programming languages used in projects")
+
+	colors = Makie.wong_colors()
+
+    # Plot
+    barplot!(ax, x, y,
+            color = colors[dodge],
+		    direction = :x,
+	        )
+		
+    Makie.save("ProgrammingLanguages.pdf", fig)
+	fig
+end
+
+plot_14()
+end
+
+# ╔═╡ db425e20-e002-490f-bb0d-83b1fdf4d527
+md"""
+15. Indicate the type of computational resources targeted by your research software
+"""
+
+# ╔═╡ 4f264291-58b8-47ad-b2de-550db41c6945
+begin
+function plot_15()
+    x = [  1,  2,  3,  4,  5, 6, 7]
+	y = Array{Int32,1}([ 26, 15, 24, 13, 18, 1, 1])
+	     
+    dodge = 1:1:7
+	
+    # Figure and Axis
+    fig = Figure()
+    ax = Axis(fig[1,1], 
+		      xticks = 0:5:35,
+		      yticks = (1:1:7, ["Single Computer", 
+				                "Single Computer with accelerator", 
+				                "Server or Edge System", 
+				                "Cloud System", 
+				                "HPC System", 
+				                "Dedicated System", 
+				                "Neuromorphic System"]),
+		      xlabel = "Responses",
+              title = "Computational hardware target")
+
+	colors = Makie.wong_colors()
+
+    # Plot
+    barplot!(ax, x, y,
+            color = colors[dodge],
+		    direction = :x,
+	        )
+		
+    Makie.save("HardwareTargets.pdf", fig)
+	fig
+end
+
+plot_15()
+end
+
+# ╔═╡ febed389-167d-4dde-bdc4-db767ee869b2
+md"""
+## Section: Skills and Knowledge
+17. Personal knowledge
+"""
+
+# ╔═╡ 4e47a571-d6b1-40df-bad4-3f966760f54d
+# Plot question 17
+begin
+
+function plot_17()
+    x = [ 1, 1, 1, 1, 1, 
+	      2, 2, 2, 2, 2, 
+		  3, 3, 3, 3, 3, 
+		  4, 4, 4, 4, 4, 
+	    ]
+	
+    y = [ 0,  0,  0,  2,  6, 
+		  5,  5,  7,  9,  9, 
+		 12, 11, 16, 11, 14, 
+		 20, 21, 14, 15,  8,
+	     ]
+    
+    dodge = [ 1, 2, 3, 4, 5,
+		      1, 2, 3, 4, 5,
+		      1, 2, 3, 4, 5,
+		      1, 2, 3, 4, 5,
+	        ]  
+
+    # Figure and Axis
+    fig = Figure()
+    ax = Axis(fig[1,1], 
+		      xticks = (1:1:4, ["1-Not important", "2", "3", "4-Very Important"]),
+              yticks = 0:5:25,
+		      xlabel = "Level of Importance",
+              ylabel = "Responses",
+              title = "Personal knowledge of software aspects")
+
+	colors = Makie.wong_colors()
+    # Plot
+    barplot!(ax, x, y,
+            dodge = dodge,
+            color = colors[dodge],
+		    tellwidth = true, tellheight = true
+	        )
+
+    # Legend
+    labels = ["Scientific context", "Algorithms and Methods", "Library dependencies",
+	          "Development best practices", "Hardware target"]
+    elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
+    title = ""
+
+	Legend(fig[1,1], elements, labels, title,
+	       tellheight = false,
+           tellwidth = false,
+           margin = (10, 10, 10, 10),
+           halign = :left, valign = :top, orientation = :vertical      
+	 )
+
+    Makie.save("PersonalKnowledge.pdf", fig)
+	fig
+end
+
+plot_17()
+end
+
+# ╔═╡ fb5181ae-03e4-42a8-9a34-b9c11dc2d22c
+md"""
+20. How you like to learn
+"""
+
+# ╔═╡ 83b092b8-3a6b-4674-89f6-2be69e2707c9
+# Plot question 20
+begin
+
+function plot_20()
+    x = [ 1, 1, 1, 1, 1, 
+	      2, 2, 2, 2, 2, 
+		  3, 3, 3, 3, 3, 
+		  4, 4, 4, 4, 4, 
+	    ]
+	
+    y = [ 1,  3,  0,  4,  0, 
+		  6,  8,  5, 10,  9, 
+		  6, 18, 19, 11, 22, 
+		 24,  8, 12, 12,  6,
+	     ]
+    
+    dodge = [ 1, 2, 3, 4, 5,
+		      1, 2, 3, 4, 5,
+		      1, 2, 3, 4, 5,
+		      1, 2, 3, 4, 5,
+	        ]  
+
+    # Figure and Axis
+    fig = Figure()
+    ax = Axis(fig[1,1], 
+		      xticks = (1:1:4, ["1-Not preferred", "2", "3", "4-Strongly preferred"]),
+              yticks = 0:5:25,
+		      xlabel = "Level of preference",
+              ylabel = "Responses",
+              title = "Preference for learning style")
+
+	colors = Makie.wong_colors()
+    # Plot
+    barplot!(ax, x, y,
+            dodge = dodge,
+            color = colors[dodge],
+		    tellwidth = true, tellheight = true
+	        )
+
+    # Legend
+    labels = ["Self-study", "Semi-formal or formal training", "Hands-on examples",
+	          "Project specific activity", "Asking a colleague"]
+    elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
+    title = ""
+
+	Legend(fig[1,1], elements, labels, title,
+	       tellheight = false,
+           tellwidth = false,
+           margin = (10, 10, 10, 10),
+           halign = :left, valign = :top, orientation = :vertical      
+	 )
+
+    Makie.save("LearningStyle.pdf", fig)
+	fig
+end
+
+plot_20()
+end
+
+# ╔═╡ 5f7d0c7f-6d5f-4859-9637-2abc7f3506ee
+md"""
+## Section: Preparing for the Future
+
+31. To what extent do the changes you anticipate to your project in the next five years cause you concern as a developer?
+"""
+
+# ╔═╡ 3cd83886-51b7-4c9e-84b1-4f3c1f4dbc57
+# Plot question 31
+begin
+	
+function plot_31()
+    x = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	      2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+		  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 
+		  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4  
+	    ]
+	
+    y = [  4,  10,  5,  4,  4,  2, 10,  8,  6,  9, 12, 14,
+		  10,  15,  9, 12, 10, 10,  9, 13, 12, 11,  9, 10,
+		   9,   8, 18, 13, 16, 16, 11, 12, 11, 11, 12, 10,
+		  14,   4,  5,  8,  7,  9,  7,  4,  8,  6,  4,  3
+	     ]
+    
+    dodge = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+		      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+		      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+		      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+	        ]  
+
+    # Figure and Axis
+    fig = Figure()
+    ax = Axis(fig[1,1], 
+		      xticks = (1:1:4, ["1-Not concerned", "2", "3", "4-Very concerned"]),
+              yticks = 0:5:20,
+		      xlabel = "Level of Concern",
+              ylabel = "Responses",
+              title = "Concern for anticipated project future changes")
+
+	colors = Makie.wong_colors()
+	#RGBA{Float32}(0.9411765f0,0.89411765f0,0.25882354f0,1.0f0)
+    push!(colors, ColorTypes.RGBA{Float32}(0.5f0,0.89411765f0,0.25882354f0,1.0f0))
+	push!(colors, ColorTypes.RGBA{Float32}(0.9411765f0,0.5f0,0.25882354f0,1.0f0))
+	push!(colors,ColorTypes.RGBA{Float32}(0.9411765f0,0.89411765f0,0.5f0,1.0f0))
+	push!(colors, ColorTypes.RGBA{Float32}(0.9411765f0,0.89411765f0,1.0f0,1.0f0))
+	push!(colors, ColorTypes.RGBA{Float32}(0.9411765f0,0.5f0,0.5f0,1.0f0))
+
+    # Plot
+    barplot!(ax, x, y,
+            dodge = dodge,
+            color = colors[dodge],
+	        )
+
+    # Legend
+    labels = ["Hardware", 
+		      "Scientific context", 
+		      "Functionality",
+	          "Usability", 
+		      "Sustainability", 
+		      "Performance", 
+		      "Data storage",
+	          "Numerical libraries",
+		      "Data interaction",
+		      "CI/CD",
+		      "Cloud deployment",
+		      "Cloud services"
+	         ]
+    
+	elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
+    title = "Changes in"
+
+	Legend(fig[1,2], elements, labels, title, labelsize=11)
+		
+    Makie.save("FutureConcerns.pdf", fig)
+	fig
+end
+
+plot_31()
+end
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+ColorTypes = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 
 [compat]
 CairoMakie = "~0.7.2"
+ColorTypes = "~0.11.0"
 Makie = "~0.16.3"
 """
 
@@ -1228,5 +1671,19 @@ version = "3.5.0+0"
 # ╟─de5b448f-56f9-477e-b232-f0ee49822bec
 # ╟─b341d6c8-09ea-4c95-b001-ec92adb279ed
 # ╟─7ceb361f-6916-4946-9101-56403d88a8b7
+# ╟─b46d2338-2179-434b-97bd-c3cb401b4519
+# ╟─ba87bdf3-0789-434b-84e2-93184faf18fb
+# ╟─9c6234a5-9721-431f-bc95-8d7a2efd91c5
+# ╟─c927a13e-82d5-402a-b330-fdecadf58764
+# ╟─7e97d299-86e0-4dcc-878a-5fd54b1d2a53
+# ╟─0bb3a38f-955f-48ec-b606-785557f16cb1
+# ╟─db425e20-e002-490f-bb0d-83b1fdf4d527
+# ╟─4f264291-58b8-47ad-b2de-550db41c6945
+# ╟─febed389-167d-4dde-bdc4-db767ee869b2
+# ╟─4e47a571-d6b1-40df-bad4-3f966760f54d
+# ╟─fb5181ae-03e4-42a8-9a34-b9c11dc2d22c
+# ╟─83b092b8-3a6b-4674-89f6-2be69e2707c9
+# ╟─5f7d0c7f-6d5f-4859-9637-2abc7f3506ee
+# ╟─3cd83886-51b7-4c9e-84b1-4f3c1f4dbc57
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
